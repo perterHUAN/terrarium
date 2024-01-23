@@ -1,0 +1,261 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+:root {
+  /* 
+    定义一些变量
+    color
+    size
+  */
+  --container-bg: #eee;
+  --jar-bg: #d1e1df;
+  --dirty-bg: #3a241d;
+  --glossy-bg: #ddfbff;
+
+  --plant-holder-height: 13%; /* 一列7个 不要有滚动条*/
+
+  --plant-max-width: 100%;
+  --plant-max-height: 100%; /* 会有重叠  */
+
+  --opacity-1: 0.5;
+  --opacity-2: 0.7;
+
+  --container-width: 15%;
+  --container-height: 100%; /*  相对于于视口 */
+
+  --jar-width-1: 50%;
+  --jar-width-2: 60%;
+
+  --jar-height-1: 2%;
+  --jar-height-2: 5%;
+  --jar-height-3: 80%;
+
+  --jar-bottom-height: var(--jar-height-1);
+  --jar-bottom-width: var(--jar-width-1);
+  --jar-bottom-bottom: 0;
+
+  --jar-dirty-height: var(--jar-height-2);
+  --jar-dirty-width: var(--jar-width-2);
+  --jar-dirty-bottom: var(--jar-bottom-height);
+
+  --jar-wall-height: var(--jar-height-3);
+  --jar-wall-width: var(--jar-width-2);
+  --jar-wall-bottom: var(--jar-dirty-bottom);
+
+  --jar-top-height: var(--jar-height-2);
+  --jar-top-width: var(--jar-width-1);
+  --jar-top-bottom: calc(var(--jar-wall-bottom) + var(--jar-wall-height));
+
+  --jar-radius: 1rem;
+  --glossy-radius: 2rem;
+
+  --jar-glossy-long-height: 15%;
+  --jar-glossy-long-width: 5%;
+  --jar-glossy-long-left: 10%; /* 相对于 jar-wall */
+  --jar-glossy-long-bottom: 10%;
+
+  --jar-glossy-short-height: 5%;
+  --jar-glossy-short-width: 5%;
+  --jar-glossy-short-left: 10%;
+  --jar-glossy-short-bottom: calc(
+    var(--jar-glossy-long-bottom) + var(--jar-glossy-long-height) + 5%
+  );
+}
+
+html {
+  block-size: 100%;
+}
+
+body {
+  min-block-size: 100%;
+}
+h1 {
+  color: #3a241d;
+  text-align: center;
+}
+
+.container {
+  /* 
+    相对于视口
+    (祖先元素都没有非staitc定位时，
+    就相对于 
+    initial containing block
+    (the containing block of the root element))
+  */
+  position: absolute;
+
+  width: var(--container-width);
+  height: var(--container-height);
+
+  background-color: #eee;
+
+  /* 
+    离边界远一点
+*/
+  padding: 10px;
+}
+
+#left-container {
+  top: 0;
+  left: 0;
+}
+#right-container {
+  top: 0;
+  right: 0;
+}
+
+.plant-holder {
+  /* 
+    为拖拽元素提供包含块
+  */
+  position: relative;
+
+  height: var(--plant-holder-height);
+  /* 
+    width 默认充满父元素的content box
+  */
+}
+.plant {
+  display: block;
+  position: absolute;
+
+  /* 
+    照片依然保持原有的比例
+  */
+  max-width: var(--plant-max-width);
+  max-height: var(--plant-max-height);
+}
+
+.jar-top {
+  /* 
+    大小
+  */
+  width: var(--jar-top-width);
+  height: var(--jar-top-height);
+
+  /* 
+    居中位置
+    相对于视口
+  */
+  position: absolute;
+  left: calc((100% - var(--jar-top-width)) / 2);
+  bottom: var(--jar-top-bottom);
+
+  /* 
+    颜色
+  */
+  opacity: var(--opacity-2);
+  background-color: var(--jar-bg);
+}
+
+.jar-wall {
+  /* 
+    大小
+  */
+  width: var(--jar-wall-width);
+  height: var(--jar-wall-height);
+
+  /* 
+    居中位置
+    相对于视口
+  */
+  position: absolute;
+  left: calc((100% - var(--jar-wall-width)) / 2);
+  bottom: var(--jar-wall-bottom);
+
+  /* 
+    颜色
+  */
+  opacity: var(--opacity-1);
+  background-color: var(--jar-bg);
+
+  border-radius: var(--jar-radius);
+}
+
+.dirty {
+  /* 
+    大小
+  */
+  width: var(--jar-dirty-width);
+  height: var(--jar-dirty-height);
+
+  /* 
+    居中位置
+    相对于视口
+  */
+  position: absolute;
+  left: calc((100% - var(--jar-dirty-width)) / 2);
+  bottom: var(--jar-dirty-bottom);
+  /* 
+    颜色
+  */
+  opacity: var(--opacity-2);
+  background-color: var(--dirty-bg);
+
+  /* 
+    在瓶子里面
+  */
+  z-index: -1;
+
+  border-radius: 0 0 var(--jar-radius) var(--jar-radius);
+}
+.jar-bottom {
+  /* 
+    大小
+  */
+  width: var(--jar-bottom-width);
+  height: var(--jar-bottom-height);
+
+  /* 
+    居中位置
+    相对于视口
+  */
+  position: absolute;
+  left: calc((100% - var(--jar-bottom-width)) / 2);
+  bottom: var(--jar-bottom-bottom);
+
+  /* 
+    颜色
+  */
+  opacity: var(--opacity-1);
+  background-color: var(--jar-bg);
+}
+
+.jar-glossy-long {
+  /* 
+    大小
+  */
+  height: var(--jar-glossy-long-height);
+  width: var(--jar-glossy-long-width);
+
+  /* 
+    定位
+  */
+  position: absolute;
+  bottom: var(--jar-glossy-long-bottom);
+  left: var(--jar-glossy-long-left);
+
+  border-radius: var(--glossy-radius);
+
+  background-color: var(--glossy-bg);
+}
+
+.jar-glossy-short {
+  /* 
+    大小
+  */
+  height: var(--jar-glossy-short-height);
+  width: var(--jar-glossy-short-width);
+
+  /* 
+    定位
+  */
+  position: absolute;
+  bottom: var(--jar-glossy-short-bottom);
+  left: var(--jar-glossy-short-left);
+
+  border-radius: var(--glossy-radius);
+  background-color: var(--glossy-bg);
+}
