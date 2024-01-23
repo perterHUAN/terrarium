@@ -126,6 +126,12 @@ h1 {
   */
   max-width: var(--plant-max-width);
   max-height: var(--plant-max-height);
+
+  /* 
+    将植物拖拽到瓶子的时候，瓶子在植物的上层，此时mousemove事件就不能在植物上触
+    发了。只能设置植物的层级，使得植物的瓶子的上层，但是好怪？植物在瓶子的外边
+  */
+  z-index: 2;
 }
 
 .jar-top {
